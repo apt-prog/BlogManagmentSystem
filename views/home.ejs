@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FV-BLOGS The Ultimate Blogs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Add Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Poppins:wght@600&family=Roboto&display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .italic-desc {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .tag-badge {
+            background-color: #e0f2fe;
+            color: #0284c7;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 6px;
+            display: inline-block;
+        }
+    </style>
+    <style>
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+            transition: left 0.3s ease-in-out;
+        }
+
+        .nav-link:hover::after {
+            left: 0;
+        }
+
+        .search-focus:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .post-card {
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal {
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .scroll-to-top:active {
+            transform: translateY(-1px);
+        }
+
+        .scroll-to-top svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        .scroll-to-top:hover svg {
+            transform: translateY(-2px);
+        }
+
+        /* Dark mode adjustments for scroll button */
+        .dark .scroll-to-top {
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .dark .scroll-to-top:hover {
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .scroll-to-top svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="/"
+                        class="text-2xl font-bold text-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        FV-BLOGS
+                    </a>
+                </div>
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="/"
+                            class="nav-link text-blue-500 dark:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            Home
+                        </a>
+                        <a href="/about"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            About Us
+                        </a>
+                        <a href="/contact"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+                <!-- Right Side Icons and Buttons -->
+                <div class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
+                        <svg id="sun-icon" class="w-5 h-5 text-yellow-500 dark:hidden" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-gray-300 hidden dark:block" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <!-- Login Button -->
+                    <button id="login-btn"
+                        class="hidden sm:block px-4 py-2 text-sm font-medium text-blue-500 hover:text-blue-600 border border-blue-500 hover:border-blue-600 rounded-lg transition-colors duration-200">
+                        Login
+                    </button>
+                    <!-- Register Button -->
+                    <button id="register-btn"
+                        class="hidden sm:block px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors duration-200">
+                        Register
+                    </button>
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button"
+                        class="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu"
+            class="md:hidden hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">Home</a>
+                <a href="/about"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">About</a>
+                <a href="/contact"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">Contact
+                    Us</a>
+                <div class="flex space-x-2 px-3 py-2">
+                    <button id="mobile-login-btn"
+                        class="flex-1 px-3 py-2 text-sm font-medium text-blue-500 hover:text-blue-600 border border-blue-500 hover:border-blue-600 rounded-lg transition-colors duration-200">
+                        Login
+                    </button>
+                    <button id="mobile-register-btn"
+                        class="flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors duration-200">
+                        Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="login-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Login</h2>
+                    <button id="close-login-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form class="space-y-4" method="post" action="/login">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                        <input type="email"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your email" required name="email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                        <input type="password"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your password" required name="password">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" type="checkbox"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                        Sign In
+                    </button>
+                    <div class="text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Don't have an account? </span>
+                        <button type="button" id="switch-to-register"
+                            class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            Sign up
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create Account</h2>
+                    <button id="close-register-modal"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form class="space-y-4" method="post" action="/create">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+                        <input type="text"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your full name" name="name" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                        <input type="email"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your email" name="email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image
+                            Link</label>
+                        <input type="text"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter profile image link Ex. http://img123.abc.xyz" name="image" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                        <input type="password"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your password" name="password" required>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="agree-terms" type="checkbox"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="agree-terms" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms and
+                                Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                        Create Account
+                    </button>
+                    <div class="text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Already have an account? </span>
+                        <button type="button" id="switch-to-login"
+                            class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            Sign in
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Search Bar -->
+        <div class="mb-12">
+            <div class="max-w-2xl mx-auto">
+                <div class="relative">
+                    <input id="search-input" type="text" placeholder="Search for articles, topics, or authors..."
+                        class="search-focus w-full px-4 py-3 pl-12 pr-4 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Posts Section -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Latest Posts</h2>
+                <button id="view-all-btn"
+                    class="text-blue-500 hover:text-blue-600 font-medium transition-colors duration-200 cursor-pointer">View
+                    All →</button>
+            </div>
+            <div id="latest-posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Post Card 1 -->
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="tech" data-title="The Future of Web Development: Trends to Watch in 2025"
+                    data-author="John Doe">
+                    <img src="/development.jpg" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Tech</span>
+                            <span class="mx-2">•</span>
+                            <span>5 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/1"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3
+                            class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                            The Future of Web Development: Trends to Watch in 2025
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                            Explore the latest trends shaping the future of web development, from AI integration to new
+                            frameworks.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    JD
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">John Doe</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 15</span>
+                        </div>
+                    </div>
+                </article>
+                <!-- Post Card 2 -->
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="design" data-title="Mastering UI/UX Design Principles for Better User Experience"
+                    data-author="Alice Smith">
+                    <img src="/uiux.jpg" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Design</span>
+                            <span class="mx-2">•</span>
+                            <span>3 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/2"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3
+                            class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                            Mastering UI/UX Design Principles for Better User Experience
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                            Learn essential design principles that will help you create intuitive and engaging user
+                            interfaces.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    AS
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Alice Smith</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 14</span>
+                        </div>
+                    </div>
+                </article>
+                <!-- Post Card 3 -->
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="business" data-title="Building a Successful Startup: Lessons from Industry Leaders"
+                    data-author="Mike Brown">
+                    <img src="/startup.jpg" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Business</span>
+                            <span class="mx-2">•</span>
+                            <span>7 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/3"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3
+                            class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                            Building a Successful Startup: Lessons from Industry Leaders
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                            Discover key insights and strategies from successful entrepreneurs who built thriving
+                            businesses.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    MB
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Mike Brown</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 13</span>
+                        </div>
+                    </div>
+                </article>
+                <!-- Post Card 4 -->
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="lifestyle" data-title="Work-Life Balance in the Digital Age: Tips for Remote Workers"
+                    data-author="Sarah Johnson">
+                    <img src="/worklife.jpg" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Lifestyle</span>
+                            <span class="mx-2">•</span>
+                            <span>4 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/4"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3
+                            class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                            Work-Life Balance in the Digital Age: Tips for Remote Workers
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                            Practical strategies to maintain a healthy work-life balance while working remotely.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    SJ
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Sarah Johnson</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 12</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- All Posts Section -->
+        <section>
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">All Posts</h2>
+            </div>
+            <div id="all-posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Additional Post Cards -->
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="tech" data-title="Getting Started with Machine Learning: A Beginner's Guide"
+                    data-author="David Wilson">
+                    <img src="/machine.png" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Tech</span>
+                            <span class="mx-2">•</span>
+                            <span>6 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/5"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            Getting Started with Machine Learning: A Beginner's Guide
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                            An introduction to machine learning concepts and practical applications for beginners.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    DW
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">David Wilson</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 11</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="design" data-title="Color Theory in Web Design: Creating Harmonious Palettes"
+                    data-author="Emma Miller">
+                    <img src="/color.jpg" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Design</span>
+                            <span class="mx-2">•</span>
+                            <span>5 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/6"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            Color Theory in Web Design: Creating Harmonious Palettes
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                            Learn how to choose and combine colors effectively for stunning web designs.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    EM
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Emma Miller</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 10</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                    data-category="business" data-title="Digital Marketing Strategies That Actually Work in 2025"
+                    data-author="Robert Taylor">
+                    <img src="/digitalmarketing.jpg" alt="Blog Image" class="w-full h-48 object-cover rounded-t-lg" />
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <span>Business</span>
+                            <span class="mx-2">•</span>
+                            <span>8 min read</span>
+                            <span class="mx-2">•</span>
+                            <span class="ml-auto">
+                                <a href="/blog/7"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group view-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+                            </span>
+                        </div>
+                        <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            Digital Marketing Strategies That Actually Work in 2025
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                            Proven digital marketing tactics to grow your business and reach your target audience.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    RT
+                                </div>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Robert Taylor</span>
+                            </div>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Dec 9</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <!-- See More Button -->
+            <div class="text-center mt-12">
+                <button id="See-more"
+                    class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200">
+                    See More Posts
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="text-center">
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    © 2025 FV-BLOGS. All rights reserved. Made with ❤️ for bloggers.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Modal Functionality
+        const loginModal = document.getElementById('login-modal');
+        const registerModal = document.getElementById('register-modal');
+        const loginBtns = [document.getElementById('login-btn'), document.getElementById('mobile-login-btn')];
+        const registerBtns = [document.getElementById('register-btn'), document.getElementById('mobile-register-btn')];
+        const closeLoginModal = document.getElementById('close-login-modal');
+        const closeRegisterModal = document.getElementById('close-register-modal');
+
+        // Open login modal
+        loginBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Open register modal
+        registerBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                registerModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modals
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        closeRegisterModal.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modals when clicking outside
+        [loginModal, registerModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Switch between login and register modals
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+
+        // Switch from login to register modal
+        switchToRegister.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            registerModal.classList.remove('hidden');
+        });
+
+        // Switch from register to login modal
+        switchToLogin.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+            loginModal.classList.remove('hidden');
+        });
+
+        // See More Button - Opens Login Modal
+        const seeMoreBtn = document.getElementById('See-more');
+        seeMoreBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // View All Button - Opens Login Modal
+        const viewAllBtn = document.getElementById('view-all-btn');
+        viewAllBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('search-input');
+        const allPosts = document.querySelectorAll('.post-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            allPosts.forEach(post => {
+                const title = post.dataset.title.toLowerCase();
+                const author = post.dataset.author.toLowerCase();
+                const category = post.dataset.category.toLowerCase();
+
+                if (title.includes(searchTerm) || author.includes(searchTerm) || category.includes(searchTerm)) {
+                    post.style.display = 'block';
+                    post.classList.add('fade-in');
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+        // Show/hide scroll to top button based on scroll position
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Scroll to top when button is clicked
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Make all blog card 'View' links open the login modal
+        document.querySelectorAll('.view-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                loginModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+    </script>
+</body>
+
+</html>

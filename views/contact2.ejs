@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FV-BLOGS The Ultimate Blogs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Add Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Poppins:wght@600&family=Roboto&display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .italic-desc {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .tag-badge {
+            background-color: #e0f2fe;
+            color: #0284c7;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 6px;
+            display: inline-block;
+        }
+    </style>
+    <style>
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+            transition: left 0.3s ease-in-out;
+        }
+
+        .nav-link:hover::after {
+            left: 0;
+        }
+
+        .search-focus:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal {
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Contact Form Styles */
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .contact-icon {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+        }
+
+        .dark .contact-icon {
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .scroll-to-top svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        .scroll-to-top:hover svg {
+            transform: translateY(-2px);
+        }
+
+        .dark .scroll-to-top {
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .dark .scroll-to-top:hover {
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Success/Error Message Animations */
+        .message-slide-in {
+            animation: messageSlideIn 0.5s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .scroll-to-top svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <a href="/dashboard"
+                        class="text-2xl font-bold text-blue-500 hover:text-blue-600 transition-colors duration-200">FV-BLOGS</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="/dashboard"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
+                        <a href="/create-blog"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">Create
+                            Blogs</a>
+                        <a href="/allblogs"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">All
+                            Blogs</a>
+                        <a href="/aboutus"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">About
+                            Us</a>
+                        <a href="/contactus"
+                            class="nav-link text-blue-500 dark:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">Contact
+                            Us</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
+                        <svg id="sun-icon" class="w-5 h-5 text-yellow-500 dark:hidden" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-gray-300 hidden dark:block" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <a href="/logout" id="login-btn"
+                        class="hidden sm:block px-4 py-2 text-sm font-medium text-red-500 hover:text-white hover:bg-red-600 border border-red-500 hover:border-red-600 rounded-lg transition-colors duration-200">Logout</a>
+                    <button id="mobile-menu-button"
+                        class="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu"
+            class="md:hidden hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/dashboard"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">Dashboard</a>
+                <a href="/create-blog"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">Create
+                    Blogs</a>
+                <a href="/allblogs"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">All
+                    Blogs</a>
+                <a href="/aboutus"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">About
+                    Us</a>
+                <a href="/contactus"
+                    class="nav-link text-blue-500 dark:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">Contact
+                    Us</a>
+                <div class="flex space-x-2 px-3 py-2">
+                    <a href="/logout" id="mobile-login-btn"
+                        class="flex-1 text-center px-3 py-2 text-sm font-medium text-red-500 hover:text-blue-600 border border-blue-500 hover:border-blue-600 rounded-lg transition-colors duration-200">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="login-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Login</h2>
+                    <button id="close-login-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form class="space-y-4" method="post" action="/login">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                        <input type="email"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your email" name="email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                        <input type="password"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your password" name="password" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" type="checkbox"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                        Sign In
+                    </button>
+                    <div class="text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Don't have an account? </span>
+                        <button type="button" id="switch-to-register"
+                            class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            Sign up
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create Account</h2>
+                    <button id="close-register-modal"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form class="space-y-4" method="post" action="/create">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+                        <input type="text"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your full name" name="name" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                        <input type="email"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your email" name="email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image
+                            Link</label>
+                        <input type="text"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter profile image link Ex. http://img123.abc.xyz" name="image" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                        <input type="password"
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            placeholder="Enter your password" name="password" required>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="agree-terms" type="checkbox"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="agree-terms" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms and
+                                Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                        Create Account
+                    </button>
+                    <div class="text-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Already have an account? </span>
+                        <button type="button" id="switch-to-login"
+                            class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                            Sign in
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <div class="max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+                    Get in <span class="text-blue-500">Touch</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 italic-desc">
+                    We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Information Cards -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Email Card -->
+                <div class="contact-card bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <div class="contact-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Email Us</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Send us an email anytime!</p>
+                    <a href="mailto:contact@fv-blogs.com" class="text-blue-500 hover:text-blue-600 font-medium">
+                        contact@fv-blogs.com
+                    </a>
+                </div>
+
+                <!-- Phone Card -->
+                <div class="contact-card bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <div class="contact-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Call Us</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Mon-Fri from 8am to 5pm</p>
+                    <a href="tel:+1234567890" class="text-blue-500 hover:text-blue-600 font-medium">
+                        +1 (234) 567-890
+                    </a>
+                </div>
+
+                <!-- Location Card -->
+                <div class="contact-card bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <div class="contact-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Visit Us</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Come say hello at our office HQ</p>
+                    <address class="text-blue-500 hover:text-blue-600 font-medium not-italic">
+                        123 Blog Street<br>
+                        New York, NY 10001
+                    </address>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Preview Modal -->
+        <div id="preview-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+            <div
+                class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Review Your Message</h2>
+                        <button id="close-preview-modal"
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">First
+                                    Name</label>
+                                <p id="preview-firstName"
+                                    class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md">
+                                </p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Last
+                                    Name</label>
+                                <p id="preview-lastName"
+                                    class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                <p id="preview-email"
+                                    class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md">
+                                </p>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                                <p id="preview-phone"
+                                    class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
+                            <p id="preview-subject"
+                                class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md">
+                            </p>
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
+                            <p id="preview-message"
+                                class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md whitespace-pre-wrap">
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Newsletter
+                                Subscription</label>
+                            <p id="preview-newsletter"
+                                class="text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-md">
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button id="edit-form-btn"
+                            class="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                            Edit
+                        </button>
+                        <button id="confirm-submit-btn"
+                            class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200">
+                            Send Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <section class="mb-16">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Send us a Message</h2>
+                        <p class="text-gray-600 dark:text-gray-300">
+                            Fill out the form below and we'll get back to you as soon as possible.
+                        </p>
+                    </div>
+
+                    <!-- Success/Error Messages -->
+                    <div id="form-message" class="hidden mb-6 p-4 rounded-lg message-slide-in">
+                        <div class="flex items-center">
+                            <svg id="success-icon" class="w-5 h-5 mr-2 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <svg id="error-icon" class="w-5 h-5 mr-2 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span id="message-text"></span>
+                        </div>
+                    </div>
+
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- First Name -->
+                            <div>
+                                <label for="firstName"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    First Name *
+                                </label>
+                                <input type="text" id="firstName" name="firstName" required
+                                    class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+                                    placeholder="Enter your first name">
+                                <span class="error-message text-red-500 text-sm hidden"></span>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div>
+                                <label for="lastName"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Last Name *
+                                </label>
+                                <input type="text" id="lastName" name="lastName" required
+                                    class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+                                    placeholder="Enter your last name">
+                                <span class="error-message text-red-500 text-sm hidden"></span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Email -->
+                            <div>
+                                <label for="email"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Email Address *
+                                </label>
+                                <input type="email" id="email" name="email" required
+                                    class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+                                    placeholder="Enter your email address">
+                                <span class="error-message text-red-500 text-sm hidden"></span>
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label for="phone"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Phone Number
+                                </label>
+                                <input type="tel" id="phone" name="phone"
+                                    class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+                                    placeholder="Enter your phone number">
+                                <span class="error-message text-red-500 text-sm hidden"></span>
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div>
+                            <label for="subject"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Subject *
+                            </label>
+                            <select id="subject" name="subject" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200">
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="business">Business Partnership</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="error-message text-red-500 text-sm hidden"></span>
+                        </div>
+
+                        <!-- Message -->
+                        <div>
+                            <label for="message"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Message *
+                            </label>
+                            <textarea id="message" name="message" rows="6" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200 resize-none"
+                                placeholder="Enter your message here..."></textarea>
+                            <span class="error-message text-red-500 text-sm hidden"></span>
+                            <div class="text-right mt-1">
+                                <span id="char-count" class="text-sm text-gray-500 dark:text-gray-400">0/500</span>
+                            </div>
+                        </div>
+
+                        <!-- Newsletter Subscription -->
+                        <div class="flex items-center">
+                            <input id="newsletter" type="checkbox" name="newsletter"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="newsletter" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                Subscribe to our newsletter for updates and latest blog posts
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" id="submit-btn"
+                                class="w-full md:w-auto px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+                                <span id="submit-text">Send Message</span>
+                                <svg id="loading-spinner"
+                                    class="hidden animate-spin -mr-1 ml-3 h-5 w-5 text-white inline"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="mb-16">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Find answers to common questions about FV-BLOGS
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                        <button
+                            class="faq-button w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                            data-target="faq-1">
+                            <span class="font-medium text-gray-900 dark:text-white">How can I submit a guest
+                                post?</span>
+                            <svg class="faq-icon w-5 h-5 text-gray-500 transform transition-transform duration-200"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="faq-1" class="faq-content hidden px-6 pb-4">
+                            <p class="text-gray-600 dark:text-gray-300">
+                                To submit a guest post, please send us an email with your article proposal, including a
+                                brief outline and your author bio. We'll review your submission and get back to you
+                                within 3-5 business days.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                        <button
+                            class="faq-button w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                            data-target="faq-2">
+                            <span class="font-medium text-gray-900 dark:text-white">How often do you publish new
+                                content?</span>
+                            <svg class="faq-icon w-5 h-5 text-gray-500 transform transition-transform duration-200"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="faq-2" class="faq-content hidden px-6 pb-4">
+                            <p class="text-gray-600 dark:text-gray-300">
+                                We publish new blog posts 3-4 times per week, covering various topics including
+                                technology, design, business, and lifestyle. Subscribe to our newsletter to stay updated
+                                with our latest content.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                        <button
+                            class="faq-button w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                            data-target="faq-3">
+                            <span class="font-medium text-gray-900 dark:text-white">Can I advertise on your blog?</span>
+                            <svg class="faq-icon w-5 h-5 text-gray-500 transform transition-transform duration-200"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="faq-3" class="faq-content hidden px-6 pb-4">
+                            <p class="text-gray-600 dark:text-gray-300">
+                                Yes, we offer various advertising opportunities including banner ads, sponsored posts,
+                                and newsletter sponsorships. Please contact us for our media kit and pricing
+                                information.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                        <button
+                            class="faq-button w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+                            data-target="faq-4">
+                            <span class="font-medium text-gray-900 dark:text-white">How can I unsubscribe from your
+                                newsletter?</span>
+                            <svg class="faq-icon w-5 h-5 text-gray-500 transform transition-transform duration-200"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="faq-4" class="faq-content hidden px-6 pb-4">
+                            <p class="text-gray-600 dark:text-gray-300">
+                                You can unsubscribe from our newsletter at any time by clicking the "Unsubscribe" link
+                                at the bottom of any newsletter email, or by contacting us directly through this contact
+                                form.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="text-center">
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    © 2025 FV-BLOGS. All rights reserved. Made with ❤️ for bloggers.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Modal Functionality
+        const loginModal = document.getElementById('login-modal');
+        const registerModal = document.getElementById('register-modal');
+        const loginBtns = [document.getElementById('login-btn'), document.getElementById('mobile-login-btn')];
+        const registerBtns = [document.getElementById('register-btn'), document.getElementById('mobile-register-btn')];
+        const closeLoginModal = document.getElementById('close-login-modal');
+        const closeRegisterModal = document.getElementById('close-register-modal');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+
+        // Open login modal
+        loginBtns.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    loginModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+        });
+
+        // Open register modal
+        registerBtns.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    registerModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+        });
+
+        // Switch between modals
+        switchToRegister.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            registerModal.classList.remove('hidden');
+        });
+
+        switchToLogin.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+            loginModal.classList.remove('hidden');
+        });
+
+        // Close modals
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        closeRegisterModal.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modals when clicking outside
+        [loginModal, registerModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Contact Form Functionality
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const submitText = document.getElementById('submit-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const formMessage = document.getElementById('form-message');
+        const messageText = document.getElementById('message-text');
+        const successIcon = document.getElementById('success-icon');
+        const errorIcon = document.getElementById('error-icon');
+        const messageTextarea = document.getElementById('message');
+        const charCount = document.getElementById('char-count');
+
+        // Character count for message textarea
+        messageTextarea.addEventListener('input', () => {
+            const length = messageTextarea.value.length;
+            charCount.textContent = `${length}/500`;
+
+            if (length > 500) {
+                charCount.classList.add('text-red-500');
+                charCount.classList.remove('text-gray-500', 'dark:text-gray-400');
+            } else {
+                charCount.classList.remove('text-red-500');
+                charCount.classList.add('text-gray-500', 'dark:text-gray-400');
+            }
+        });
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['firstName', 'lastName', 'email', 'subject', 'message'];
+
+            requiredFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                const errorSpan = field.parentNode.querySelector('.error-message');
+
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    errorSpan.textContent = 'This field is required';
+                    errorSpan.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                    errorSpan.classList.add('hidden');
+                }
+            });
+
+            // Email validation
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email.value && !emailRegex.test(email.value)) {
+                email.classList.add('border-red-500');
+                email.parentNode.querySelector('.error-message').textContent = 'Please enter a valid email address';
+                email.parentNode.querySelector('.error-message').classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Message length validation
+            if (messageTextarea.value.length > 500) {
+                messageTextarea.classList.add('border-red-500');
+                messageTextarea.parentNode.querySelector('.error-message').textContent = 'Message must be 500 characters or less';
+                messageTextarea.parentNode.querySelector('.error-message').classList.remove('hidden');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Show message function
+        function showMessage(message, isSuccess = true) {
+            formMessage.classList.remove('hidden');
+            messageText.textContent = message;
+
+            if (isSuccess) {
+                formMessage.className = 'mb-6 p-4 rounded-lg message-slide-in bg-green-50 dark:bg-green-900 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-700';
+                successIcon.classList.remove('hidden');
+                errorIcon.classList.add('hidden');
+            } else {
+                formMessage.className = 'mb-6 p-4 rounded-lg message-slide-in bg-red-50 dark:bg-red-900 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-700';
+                successIcon.classList.add('hidden');
+                errorIcon.classList.remove('hidden');
+            }
+
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Preview Modal Elements
+        const previewModal = document.getElementById('preview-modal');
+        const closePreviewModal = document.getElementById('close-preview-modal');
+        const editFormBtn = document.getElementById('edit-form-btn');
+        const confirmSubmitBtn = document.getElementById('confirm-submit-btn');
+
+        // Function to populate preview modal
+        function populatePreviewModal() {
+            const formData = new FormData(contactForm);
+
+            // Get subject text from select option
+            const subjectSelect = document.getElementById('subject');
+            const subjectText = subjectSelect.options[subjectSelect.selectedIndex].text;
+
+            // Get newsletter status
+            const newsletterChecked = document.getElementById('newsletter').checked;
+
+            // Populate preview fields
+            document.getElementById('preview-firstName').textContent = formData.get('firstName') || 'Not provided';
+            document.getElementById('preview-lastName').textContent = formData.get('lastName') || 'Not provided';
+            document.getElementById('preview-email').textContent = formData.get('email') || 'Not provided';
+            document.getElementById('preview-phone').textContent = formData.get('phone') || 'Not provided';
+            document.getElementById('preview-subject').textContent = subjectText || 'Not provided';
+            document.getElementById('preview-message').textContent = formData.get('message') || 'Not provided';
+            document.getElementById('preview-newsletter').textContent = newsletterChecked ? 'Yes' : 'No';
+        }
+
+        // Function to submit form data
+        async function submitFormData() {
+            const formData = new FormData(contactForm);
+
+            // Show loading state
+            confirmSubmitBtn.disabled = true;
+            confirmSubmitBtn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch('/formsubmit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstName: formData.get('firstName'),
+                        lastName: formData.get('lastName'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        subject: formData.get('subject'),
+                        message: formData.get('message'),
+                        newsletter: document.getElementById('newsletter').checked
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Close modal
+                    previewModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+
+                    // Show success message
+                    showMessage(result.message, true);
+
+                    // Reset form
+                    contactForm.reset();
+                    charCount.textContent = '0/500';
+                } else {
+                    showMessage(result.message, false);
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showMessage('Sorry, there was an error sending your message. Please try again.', false);
+            } finally {
+                // Reset button state
+                confirmSubmitBtn.disabled = false;
+                confirmSubmitBtn.textContent = 'Send Message';
+            }
+        }
+
+        // Form submission - Show preview modal
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                showMessage('Please fix the errors above and try again.', false);
+                return;
+            }
+
+            // Populate and show preview modal
+            populatePreviewModal();
+            previewModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close preview modal
+        closePreviewModal.addEventListener('click', () => {
+            previewModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal) {
+                previewModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Edit form button
+        editFormBtn.addEventListener('click', () => {
+            previewModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Confirm submit button
+        confirmSubmitBtn.addEventListener('click', submitFormData);
+
+        // Clear validation errors on input
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('border-red-500');
+                const errorSpan = input.parentNode.querySelector('.error-message');
+                if (errorSpan) {
+                    errorSpan.classList.add('hidden');
+                }
+            });
+        });
+
+        // FAQ Functionality
+        document.querySelectorAll('.faq-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+                const icon = button.querySelector('.faq-icon');
+
+                // Toggle content
+                content.classList.toggle('hidden');
+
+                // Rotate icon
+                if (content.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+        // Show/hide scroll to top button based on scroll position
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Scroll to top when button is clicked
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation to elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe contact cards and form
+        document.querySelectorAll('.contact-card, .bg-white.dark\\:bg-gray-800.rounded-lg.shadow-lg').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

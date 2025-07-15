@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FV-BLOGS The Ultimate Blogs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Add Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Poppins:wght@600&family=Roboto&display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .italic-desc {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .tag-badge {
+            background-color: #e0f2fe;
+            color: #0284c7;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 6px;
+            display: inline-block;
+        }
+    </style>
+    <!-- Add Google Fonts -->
+    <style>
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+            transition: left 0.3s ease-in-out;
+        }
+
+        .nav-link:hover::after {
+            left: 0;
+        }
+
+        .post-card {
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        .scroll-to-top:hover svg {
+            transform: translateY(-2px);
+        }
+
+        .dark .scroll-to-top {
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .scroll-to-top svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 transition-colors duration-300 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="/"
+                        class="text-2xl font-bold text-blue-500 hover:text-blue-600 transition-colors duration-200">
+                        FV-BLOGS
+                    </a>
+                </div>
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="/dashboard"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            Dashboard
+                        </a>
+                        <a href="/create-blog"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            Create Blogs
+                        </a>
+                        <a href="/allblogs"
+                            class="nav-link text-blue-500 dark:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            All Blogs
+                        </a>
+                        <a href="/aboutus"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            About Us
+                        </a>
+                        <a href="/contactus"
+                            class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+                <!-- Right Side Icons and Buttons -->
+                <div class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
+                        <svg id="sun-icon" class="w-5 h-5 text-yellow-500 dark:hidden" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-gray-300 hidden dark:block" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <!-- Login Button -->
+                    <a href="/logout" id="login-btn"
+                        class="hidden sm:block px-4 py-2 text-sm font-medium text-red-500 hover:text-white hover:bg-red-600 border border-red-500 hover:border-red-600 rounded-lg transition-colors duration-200">
+                        Logout
+                    </a>
+
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button"
+                        class="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu"
+            class="md:hidden hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/dashboard"
+                    class="nav-link text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">Dashboard</a>
+                <a href="/create-blog"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">Create
+                    Blogs</a>
+                <a href="/allblogs"
+                    class="nav-link text-blue-500 dark:text-blue-400 px-3 py-2 text-sm font-medium transition-colors duration-200">All
+                    Blogs
+                </a>
+                <a href="/aboutus"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">About
+                    Us</a>
+                <a href="/contactus"
+                    class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors duration-200">Contact
+                    Us</a>
+                <div class="flex space-x-2 px-3 py-2">
+                    <a href="/logout" id="mobile-login-btn"
+                        class="flex-1 text-center px-3 py-2 text-sm font-medium text-red-500 hover:text-blue-600 border border-blue-500 hover:border-blue-600 rounded-lg transition-colors duration-200">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 flex flex-col">
+        <section>
+            <div class="flex flex-wrap items-center justify-between mt-8 mb-8 gap-4">
+                <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">All Blogs</h2>
+                <div class="flex gap-2 w-full sm:w-auto justify-end">
+                    <% const categories=[...new Set(userBlogs.map(blog=> blog.category))]; %>
+                        <select id="category-select"
+                            class="w-36 px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200">
+                            <option value="all">All Categories</option>
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category %>">
+                                    <%= category %>
+                                </option>
+                                <% }) %>
+                        </select>
+                </div>
+            </div>
+            <div id="all-posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Declare once before the loop -->
+<% let liked; %>
+
+<!-- Loop through blogs -->
+<% userBlogs.reverse().forEach((blog) => { %>
+  <% liked = blog.like.some(like => like._id.toString() === user._id.toString()); %>
+  
+  <article class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-full flex flex-col">
+    <!-- Blog Image -->
+    <div class="w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-t-md shadow-md flex-shrink-0">
+      <img src="<%= blog.image %>" alt="Blog Image"
+        class="w-full h-full object-cover object-top" />
+    </div>
+
+    <!-- Blog Content -->
+    <div class="p-6 flex flex-col flex-1">
+      <!-- Category + View -->
+      <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+        <span><%= blog.category %></span>
+        <span class="mx-2">•</span>
+        <span>7 min read</span>
+        <span class="mx-2">•</span>
+        <span class="ml-auto">
+          <a href="/blog/<%= blog._id %>"
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-all duration-200 hover:shadow-sm group">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-3.5 w-3.5 group-hover:scale-110 transition-transform duration-200"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <span>View</span>
+          </a>
+        </span>
+      </div>
+
+      <!-- Heading -->
+      <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2">
+        <%= blog.heading %>
+      </h3>
+
+      <!-- Short Content -->
+      <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+        <%= blog.content %>
+      </p>
+
+      <!-- Author + Date -->
+      <div class="flex items-center justify-between mt-auto">
+        <div class="flex items-center">
+          <img src="<%= blog.user && blog.user.image ? blog.user.image : '' %>"
+            class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-medium" />
+          <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+            <%= blog.user && blog.user.name ? blog.user.name : 'Unknown' %>
+          </span>
+        </div>
+        <span class="text-xs text-gray-500 dark:text-gray-400"><%= blog.date %></span>
+      </div>
+
+      <!-- Like Button -->
+      <div class="flex items-center space-x-4 mt-6">
+        <% if (liked) { %>
+          <!-- Filled Heart -->
+          <a href="/like/<%= blog._id %>/<%= user._id %>"
+            class="flex items-center text-red-500 hover:text-red-600 transition-colors duration-200 focus:outline-none">
+            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 
+                115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+            </svg>
+            <span class="ml-1 text-xs font-bold text-red-500 bg-red-100 rounded-full px-2 py-0.5">
+              <%= blog.like.length %>
+            </span>
+          </a>
+        <% } else { %>
+          <!-- Outlined Heart -->
+          <a href="/like/<%= blog._id %>/<%= user._id %>"
+            class="flex items-center text-red-500 hover:text-red-600 transition-colors duration-200 focus:outline-none">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 
+                116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
+            </svg>
+            <span class="ml-1 text-xs font-bold text-red-500 bg-red-100 rounded-full px-2 py-0.5">
+              <%= blog.like.length %>
+            </span>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </article>
+<% }) %>
+
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 w-full mt-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="text-center">
+                <p class="text-gray-600 dark:text-gray-400 text-sm">© 2025 FV-BLOGS. All rights reserved. Made with ❤️
+                    for bloggers.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Scroll to top">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Only Category Filter Functionality
+        const categorySelect = document.getElementById('category-select');
+        const allPosts = document.querySelectorAll('#all-posts .post-card');
+
+        categorySelect.addEventListener('change', (e) => {
+            const selectedCategory = categorySelect.value.trim().toLowerCase();
+            allPosts.forEach(post => {
+                // Find the first span inside the card, which is the category
+                const categorySpan = post.querySelector('span');
+                const category = categorySpan ? categorySpan.textContent.trim().toLowerCase() : '';
+                if (selectedCategory === 'all' || category === selectedCategory) {
+                    post.style.display = '';
+                    post.classList.add('fade-in');
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+
+        // Mobile Menu Toggle Functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
