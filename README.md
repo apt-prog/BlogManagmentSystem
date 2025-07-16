@@ -1,7 +1,5 @@
 # 📝 BlogManagementSystem
 
-![Blog Icon](https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/external-blog-seo-and-marketing-flatart-icons-outline-flatarticons.png)
-
 A fully-featured, responsive, full-stack blogging platform with secure authentication, dynamic blog handling, admin controls, and server-side rendering—built with the **MERN stack**.
 
 ---
